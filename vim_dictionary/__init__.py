@@ -38,8 +38,8 @@ def get_dictionary():
 
 def _truncate_dictionary(mydict):
     """Trim dictionary's last 'legal' section."""
-    END_OF_DICT = "\n+^End of Project Gutenberg's.*"
-    mydict = re.sub(END_OF_DICT, '', mydict, flags=(re.DOTALL))
+    END_OF_DICT = "End of Project Gutenberg's"
+    mydict = mydict[0:mydict.index(END_OF_DICT)].strip()
     return mydict
 
 

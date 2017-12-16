@@ -42,3 +42,25 @@ EOF
 endfunction
 
 " }}}
+
+function! VimDictGetNthEntry(entry_nr) " {{{
+
+    let b:entry_nr = a:entry_nr
+
+    python3 << EOF
+import sys
+import logging
+logging.disable(sys.maxsize)
+import vim
+from vim_dictionary_test import get_nth_entry
+
+cb = vim.current.buffer
+entry_nr = cb.vars['entry_nr']
+cb.vars['dict_nth_entry'] = get_nth_entry(entry_nr)
+EOF
+
+    return b:dict_nth_entry
+
+endfunction
+
+" }}}
