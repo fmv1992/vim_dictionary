@@ -1,4 +1,4 @@
-![https://travis-ci.org/fmv1992/vim_dictionary.svg?branch=dev]
+![](https://travis-ci.org/fmv1992/vim_dictionary.svg?branch=dev)
 # Vim_dictionary
 
 Add a dictionary functionality to your vim. It requires vim8 and the features `+channel` and `+python3`.
