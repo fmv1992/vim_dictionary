@@ -1,5 +1,6 @@
 """Python server for the vim_dictionary application."""
 
+import time
 import json
 import os
 import socket
@@ -8,6 +9,8 @@ import socketserver
 from __init__ import (get_dictionary, get_entries, lookup, setup_logging,
                       _instantiate_logger)
 
+
+HOST, PORT = 'localhost', 49158
 
 class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
     """Server that handles dictionary requests by vim and lookups."""
@@ -46,7 +49,8 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
                     "Json decoding error: 'ValueError'.")
                 break
             code, content = decoded
-            self.tcpreqhan_logger.debug("Correctly decoded json.")
+            self.tcpreqhan_logger.debug("Correctly decoded json. Code: '{0}'. Content: '{1}'.".format(
+                code, content))
             self.tcpreqhan_logger.debug("Len dictionary: {0}.".format(
                 len(self.dictionary)))
 
@@ -58,7 +62,10 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
                 self.server.shutdown()
                 self.server.server_close()
                 return 1
-            if decoded[0] >= 0:
+            elif content == '!is_alive':
+                self.tcpreqhan_logger.debug("Send '!is_alive' signal.")
+                self.request.sendall('TRUE'.encode('utf-8'))
+            elif decoded[0] >= 0:
                 response = lookup(decoded[1].upper(),
                                   self.entries,
                                   self.dictionary)
@@ -72,7 +79,32 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
 class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     """Base class to receive 'ThreadedTCPRequestHandler'."""
 
+    allow_reuse_address = True
+
     pass
+
+
+def check_server_is_on():
+    csio_logger = _instantiate_logger('check_server_is_on')
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        while True:
+            try:
+                csio_logger.debug('Trying to connect to socket.')
+                sock.connect((HOST, PORT))
+                break
+            except ConnectionRefusedError:
+                csio_logger.debug('Got a ConnectionRefusedError exception.')
+                return False
+        csio_logger.debug('Connected.')
+        message = json.dumps(['-1', '!is_alive'])
+        sock.sendall(bytes(message, 'utf8'))
+        response = str(sock.recv(1024), 'ascii')
+        if response == 'TRUE':
+            csio_logger.debug('Server is alive.')
+            return True
+        else:
+            csio_logger.debug('Server is not alive.')
+            return False
 
 
 if __name__ == '__main__':
@@ -84,7 +116,6 @@ if __name__ == '__main__':
     server_logger.debug('Is inside main.')
 
     # Instantiate server.
-    HOST, PORT = 'localhost', 49158
     server = ThreadedTCPServer((HOST, PORT), ThreadedTCPRequestHandler)
     ip, port = server.server_address
     server_logger.debug("Listening on port {0}".format(PORT))

@@ -30,7 +30,10 @@ call vimdictionary#default('g:vimdictionary_winminheight', 5)
 function! s:VimDictInit() " {{{
 
     call s:VimDictAddPluginToPythonPath()
-    call s:VimDictStartDictionaryServer()
+    if ! s:VimDictCheckServerIsAlive()
+        call s:VimDictStartDictionaryServer()
+    endif
+    call s:VimDictConnectToServer()
 
 endfunction
 
@@ -48,9 +51,36 @@ function! s:VimDictStartDictionaryServer() " {{{
     let l:py3server_file = g:vim_dictionary_root .
                 \ '/vim_dictionary_server.py &'
     call system("python3 " . l:py3server_file)
+
+endfunction
+
+" }}}
+function! s:VimDictConnectToServer() " {{{
+
     let l:timer = timer_start(100,
                 \ 'vimdictionary#connecttodictionaryserver',
                 \ {'repeat': 100})
+
+endfunction
+
+" }}}
+function! s:VimDictCheckServerIsAlive() " {{{
+
+    python3 << EOF
+import sys
+import logging
+logging.disable(sys.maxsize)
+
+import vim
+from vim_dictionary_server import check_server_is_on
+
+cb = vim.current.buffer
+
+cb.vars['vim_dictionary_server_is_alive'] = check_server_is_on()
+
+EOF
+
+return b:vim_dictionary_server_is_alive
 
 endfunction
 
