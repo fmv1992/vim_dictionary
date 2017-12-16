@@ -20,6 +20,7 @@ source ./test_helpers_bash/test_createvimrc.sh
 # TODO: enable those commented out tests.
 declare -a TEST_ARRAY=(
     "./test_bash/test_lookup.sh"
+    "./test_bash/test_helpfiles.sh"
     # "./test_bash/test_download.sh"
     # "./test_bash/test_server.sh"
     )
@@ -52,8 +53,10 @@ echo -e "${RETURN_CODES}"
 # Exit the script with error if there are any return codes different from 0.
 if echo $RETURN_CODES | grep -E "Return code: [1-9]" 1>/dev/null 2>/dev/null
 then
+    echo "Terminating with errors."
     exit 1
 else
+    echo "Terminating without errors."
     exit 0
 fi
 
