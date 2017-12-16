@@ -1,0 +1,145 @@
+*vim_dictionary*      For Vim Version 8.0       Last change: 2017 December 14
+
+    _   __(_)___ ___        ____/ (_)____/ /_(_)___  ____  ____ ________  __
+   | | / / / __ '__ \______/ __  / / ___/ __/ / __ \/ __ \/ __ `/ ___/ / / /
+   | |/ / / / / / / /_____/ /_/ / / /__/ /_/ / /_/ / / / / /_/ / /  / /_/ /
+   |___/_/_/ /_/ /_/      \__,_/_/\___/\__/_/\____/_/ /_/\__,_/_/   \__, /
+                                                                   /____/
+
+                          Version: 0.0.1
+
+===============================================================================
+CONTENTS                                                *vim_dictionary-contents*
+
+1. Intro ................................................. |vim_dictionary-intro|
+2. Variables ......................................... |vim_dictionary-variables|
+3. Details ............................................. |vim_dictionary-details|
+4. Next steps ....................................... |vim_dictionary-next-steps|
+5. Development ..................................... |vim_dictionary-development|
+6. License ............................................. |vim_dictionary-license|
+
+===============================================================================
+1. Intro ~
+                                                           *vim_dictionary-intro*
+
+This plugin adds a dictionary functionality to your vim (dictionary as in
+"wikitionary" not as in the data structure). It aims to be the simplest. Only
+one command defined:
+>
+    Dictionary "term"
+<
+This command should open a new scratch window with the "term" definition.
+
+For instance:
+>
+    Dictionary noxious
+<
+Yields:
+
+    NOXIOUS
+    Nox"ious, a. Etym: [L. noxius, fr. noxa harm; akin to nocere to harm,
+    hurt. Cf. Nuisance, Necromancy.]
+
+    1. Hurtful; harmful; baneful; pernicious; injurious; destructive;
+    unwholesome; insalubrious; as, noxious air, food, or climate;
+    pernicious; corrupting to morals; as, noxious practices or examples.
+    Too frequent an appearance in places of public resort is noxious to
+    spiritual promotions. Swift.
+
+    [...]
+
+All of this plugin's customization are two variables related to the window size
+of the dictionary window.
+
+===============================================================================
+2. Variables ~
+                                                       *vim_dictionary-variables*
+
+Set height of the dictionary window.                *'g:vimdictionary_winheight'*
+>
+    let g:vimdictionary_winheight = 10
+<
+This is different than vim's |winheight|. This values is actually called with
+|resize| each time an entry is looked up.
+
+                                                 *'g:vimdictionary_winminheight'*
+This is equivalent to setting |winminheight| in the opened window.
+>
+    let g:vimdictionary_winminheight = 5
+<
+
+===============================================================================
+3. Details ~
+                                                         *vim_dictionary-details*
+
+Vim-dictionary depends on python3 to run (no extra python3 dependencies
+required). It also depends on vim8 due to its |channels| features.
+
+Vim-dictionary starts a TCP server in python which holds the dictionary and
+handle the requests from different vim instances. The benefits of such layout
+is that only one instance of the dictionary is loaded in memory at a given
+time (which is already ~ 60 MB of memory). Newer vim instances try to launch
+the program but receive an error:
+
+    OSError: [Errno 112] Address already in use
+
+This is a desired side effetct as it prevents other servers from being launched
+(i. e. one per instance).
+
+The last vim instance to be closed issues a termination command to the running
+server so that closing vim also closes the server.
+
+Vim-dictionary downloads a free dictionary Project Gutenberg at
+<http://www.gutenberg.org/ebooks/29765>. This enables the plugin to be used
+even in offline mode.
+
+P. Gutenberg's dictionary is not the one with the highest quality. However due
+to time constraints and to the intention of making it useful even when offline
+I have opted for this design. See |vim_dictionary-next-steps| for suggested
+improvements.
+
+===============================================================================
+3. Next steps ~
+                                                      *vim_dictionary-next-steps*
+
+1. Add support for different dictionaries (maybe even online ones).
+1. Create an API for easy plugging of different languages dictionaries.
+1. Make the dictionaries entries "jumpable" (e.g.: CTRL-] would call dictionary
+on that word).
+1. Add a test suite for the plugin.
+
+===============================================================================
+
+3. Development ~
+                                                     *vim_dictionary-development*
+
+This section briefly defines development guidelines for vim-dicionary.
+
+1. This help file uses vim's conventions defined at |help-writing|.
+2. All defined functions should use vim's conventions and start with 'VimDict'
+(when applicable).
+3. Special marks for project development are 'TODO'. They provide a easy way
+for developers to check pending issues.
+
+TODO: add tests and then add the following guideline.
+5. If submitting a pull request then a test should be added which smartly
+covers the found bug/new feature. Check out the `tests/test.sh` (1) file and
+other executed files.
+A suggested structure is the following: add your test to
+`tests/test_bash` (2) and a vim script to be sourced at
+`tests/test_procedures_vimscript` (3). Try to make use of the already existing
+files at `tests/test_python_sample_code` (4). File (1) should be trigger the
+newly added file (2). This latter file should invoke vim which in turn sources
+file (3). File (3) may then read (4) as a first part of its assertion
+structure and then execute the remaning of the instructions/assertions.
+
+===============================================================================
+4. License ~
+                                                         *vim_dictionary-license*
+
+Vim-dictionary is released under the GNU GPLv3 or later.
+See: http://www.gnu.org/licenses/gpl.html
+
+-------------------------------------------------------------------------------
+
+vim:tw=79:ft=help:norl:
