@@ -1,4 +1,4 @@
-*vim_dictionary*      For Vim Version 8.0       Last change: 2017 December 14
+*vim_dictionary* For Vim Version 8.0    Last change: 2017 December 14
 
     _   __(_)___ ___        ____/ (_)____/ /_(_)___  ____  ____ ________  __
    | | / / / __ '__ \______/ __  / / ___/ __/ / __ \/ __ \/ __ `/ ___/ / / /

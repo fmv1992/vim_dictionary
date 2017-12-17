@@ -60,7 +60,7 @@ See `:tab help packages` in vim for details.
 `make install` will:
 
 1. Download [Project Gutenberg ebook Webster's Unabridged Dictionary](http://www.gutenberg.org/ebooks/29765) and place it under `./download`.
-1. Kindly generate helpfiles.
+1. Kindly generate helpfiles so you can `:help vim_dictionary` to find out more!
 
 # Customizing
 
@@ -76,7 +76,11 @@ Two variables are customizable:
 
 # Ideas for the future
 
-<!--- 
+1. Expand possible dictionaries.
+1. Support "pluggable" dictionaries (create a known python API for it).
+1. Support bilingual dictionaries/thesaurus.
+
+<!---
 # Advanced
 
 ## Testing
