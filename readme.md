@@ -76,6 +76,7 @@ Two variables are customizable:
 
 # Ideas for the future
 
+1. Add windows support (make paths platform independent basically).
 1. Expand possible dictionaries.
 1. Support "pluggable" dictionaries (create a known python API for it).
 1. Support bilingual dictionaries/thesaurus.
