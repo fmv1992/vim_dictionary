@@ -4,7 +4,6 @@ function! vimdictionary#vimdictionaryclose() " {{{
     if len(l:vim_pids) == 1
         " Terminate running python server.
         call ch_evalexpr(g:vim_dictionary_channel, '!close')
-        call ch_close(g:vim_dictionary_channel)
     endif
 endfunction
 

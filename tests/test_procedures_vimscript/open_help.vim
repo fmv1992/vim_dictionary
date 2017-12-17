@@ -8,7 +8,6 @@ call VimDictTestWaitForServer()
 try
     help vim_dictionary
 catch /^Vim\%((\a\+)\)\=:E149/
-    echom "cachted!"
     cquit!
 endtry
 qall!

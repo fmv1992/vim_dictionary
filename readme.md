@@ -1,11 +1,20 @@
 ![](https://travis-ci.org/fmv1992/vim_dictionary.svg?branch=dev)
+
 # Vim_dictionary
+
+## Screencast
+
+See it in action:
+
+[![asciicast](https://asciinema.org/a/s9Gk1QCcPBwjM4OAxViNIlUoR.png)](https://asciinema.org/a/s9Gk1QCcPBwjM4OAxViNIlUoR)
+
+## Description
 
 Add a dictionary functionality to your vim. It requires vim8 and the features `+channel` and `+python3`.
 
 Example:
 
-    Dictionary noxious
+    :Dictionary noxious
 
 Will give you:
 
@@ -34,6 +43,7 @@ That's it, this is a [KISS](https://en.wikipedia.org/wiki/KISS_principle) plugin
 # Requirements
 
 It requires vim8 and the features `+channel` and `+python3`.
+
 It requires python3 to be installed as well.
 
 # Installing
@@ -47,28 +57,34 @@ See `:tab help packages` in vim for details.
     cd vim_dictionary
     make install
 
-This will download [Project Gutenberg ebook Webster's Unabridged Dictionary](http://www.gutenberg.org/ebooks/29765) and place it under `./download`.
+`make install` will:
+
+1. Download [Project Gutenberg ebook Webster's Unabridged Dictionary](http://www.gutenberg.org/ebooks/29765) and place it under `./download`.
+1. Kindly generate helpfiles.
 
 # Customizing
 
-# Troubleshooting
+Two variables are customizable:
 
-## Advanced
+1. The height of the window with the lookup result. Put this in your vimrc:
+
+        let g:vimdictionary_winheight = 10
+
+1. The `winminheight` for the window with the lookup result.
+
+        let g:vimdictionary_winminheight = 5
+
+# Ideas for the future
+
+<!--- 
+# Advanced
 
 ## Testing
 
-1. Stress test.
-1. First word.
-1. Last word.
-1. Random words.
+1. [✓] Stress test.
+1. [✓] First word.
+1. [✓] Last word.
+1. [✓] Random words.
 
 ## TODO
-
-1. BUG: sometimes vim hangs and the server is not killed...
-1. Write a decent help file.
-1. Write a small makefile.
-    1. Check eligibility for plugin installation.
-    1. Download dictionary.
-    1. Execute tests.
-1. Fold everything!
-1. Write python docstrings.
+--->
