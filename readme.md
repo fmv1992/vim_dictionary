@@ -42,13 +42,15 @@ That's it, this is a [KISS](https://en.wikipedia.org/wiki/KISS_principle) plugin
 
 # Requirements
 
-It requires vim8 and the features `+channel` and `+python3`.
+* Vim >= 8.0
+    * `+channel` support
+    * `+python3` support
 
-It requires python3 to be installed as well.
+* `python3` itself.
 
 # Installing
 
-Install this plugin with your favorite plugin manager or use vim8 recommended package structure.
+Install this plugin with your favorite plugin manager or use vim8's recommended package structure.
 
 See `:tab help packages` in vim for details.
 
@@ -83,7 +85,7 @@ Two variables are customizable:
 
 # License
 
-* [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html).
+[GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html).
 
 <!---
 # Advanced
