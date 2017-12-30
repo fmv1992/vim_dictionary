@@ -40,6 +40,8 @@ Will give you:
 
 That's it, this is a [KISS](https://en.wikipedia.org/wiki/KISS_principle) plugin.
 
+You can check for details [here](https://github.com/fmv1992/vim_dictionary/blob/dev/doc/vim_dictionary.txt#L72).
+
 # Requirements
 
 * Vim >= 8.0
@@ -97,5 +99,8 @@ Two variables are customizable:
 1. [✓] Last word.
 1. [✓] Random words.
 
-## TODO
 --->
+## TODO
+
+* If vim is called via root other it creates the dictionary file '/tmp/vim_dictionary.log' which cannot be overwritten.
+* Add the option to let the python3 server idle even without vim instances.
