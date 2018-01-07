@@ -1,4 +1,4 @@
-*vim_dictionary* For Vim Version 8.0    Last change: 2017 December 14
+*vim_dictionary* For Vim Version 8.0    Last change: 2018 January 07
 
     _   __(_)___ ___        ____/ (_)____/ /_(_)___  ____  ____ ________  __
    | | / / / __ '__ \______/ __  / / ___/ __/ / __ \/ __ \/ __ `/ ___/ / / /
@@ -6,7 +6,7 @@
    |___/_/_/ /_/ /_/      \__,_/_/\___/\__/_/\____/_/ /_/\__,_/_/   \__, /
                                                                    /____/
 
-                          Version: 0.0.1
+                          Version: 0.0.2
 
 ===============================================================================
 CONTENTS                                                *vim_dictionary-contents*
@@ -16,7 +16,8 @@ CONTENTS                                                *vim_dictionary-contents
 3. Details ............................................. |vim_dictionary-details|
 4. Next steps ....................................... |vim_dictionary-next-steps|
 5. Development ..................................... |vim_dictionary-development|
-6. License ............................................. |vim_dictionary-license|
+6. Changelog ......................................... |vim_dictionary_changelog|
+7. License ............................................. |vim_dictionary-license|
 
 ===============================================================================
 1. Intro ~
@@ -55,7 +56,8 @@ of the dictionary window.
 2. Variables ~
                                                        *vim_dictionary-variables*
 
-Set height of the dictionary window.                *'g:vimdictionary_winheight'*
+                                                    *'g:vimdictionary_winheight'*
+Set height of the dictionary window.
 >
     let g:vimdictionary_winheight = 10
 <
@@ -66,6 +68,12 @@ This is different than vim's |winheight|. This values is actually called with
 This is equivalent to setting |winminheight| in the opened window.
 >
     let g:vimdictionary_winminheight = 5
+<
+                                            *'g:vimdictionary_persistent_server'*
+This option disables the termination of the process when the last instance of
+vim is closed. It may save some time during vim non-first vim's initialization.
+>
+    let g:vimdictionary_persistent_server = 1
 <
 
 ===============================================================================
@@ -99,7 +107,7 @@ I have opted for this design. See |vim_dictionary-next-steps| for suggested
 improvements.
 
 ===============================================================================
-3. Next steps ~
+4. Next steps ~
                                                       *vim_dictionary-next-steps*
 
 1. Add support for different dictionaries (maybe even online ones).
@@ -109,8 +117,7 @@ on that word).
 1. Add a test suite for the plugin.
 
 ===============================================================================
-
-3. Development ~
+5. Development ~
                                                      *vim_dictionary-development*
 
 This section briefly defines development guidelines for vim-dicionary.
@@ -131,10 +138,22 @@ A suggested structure is the following: add your test to
 files at `tests/test_python_sample_code` (4). File (1) should be trigger the
 newly added file (2). This latter file should invoke vim which in turn sources
 file (3). File (3) may then read (4) as a first part of its assertion
-structure and then execute the remaning of the instructions/assertions.
+structure and then execute the remaining of the instructions/assertions.
 
 ===============================================================================
-4. License ~
+6. Changelog ~
+                                                       *vim_dictionary_changelog*
+
+* Version 0.0.2
+    * Added option to leave the python server alive even without vim instances
+    using the |g:vimdictionary_persistent_server| variable.
+* Version 0.0.1
+    * First public version.
+
+This section briefly defines development guidelines for vim-dicionary.
+
+===============================================================================
+7. License ~
                                                          *vim_dictionary-license*
 
 Vim-dictionary is released under the GNU GPLv3 or later.

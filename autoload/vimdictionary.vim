@@ -1,9 +1,13 @@
 " Python server related functions. {{{
 function! vimdictionary#vimdictionaryclose() " {{{
-    let l:vim_pids = s:VimDictGetVimPIDS()
-    if len(l:vim_pids) == 1
-        " Terminate running python server.
-        call ch_evalexpr(g:vim_dictionary_channel, '!close')
+    if ! g:vimdictionary_persistent_server
+        let l:vim_pids = s:VimDictGetVimPIDS()
+        if len(l:vim_pids) == 1
+            " Terminate running python server.
+            call ch_evalexpr(g:vim_dictionary_channel, '!close')
+        endif
+    else
+        " Let the python process in the background.
     endif
 endfunction
 
@@ -91,8 +95,8 @@ endfunction
 " }}}
 
 " Functions related to project maintenance. {{{
-fun! vimdictionary#default(name, default) "{{{
-    if !exists(a:name)
+function! vimdictionary#default(name, default) "{{{
+    if ! exists(a:name)
         let {a:name} = a:default
         return 0
     endif

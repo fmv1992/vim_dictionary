@@ -24,6 +24,7 @@ let g:vim_dictionary_root = expand('<sfile>:p:h:h') . '/vim_dictionary'
 " Set plugin variables. {{{
 call vimdictionary#default('g:vimdictionary_winheight', 10)
 call vimdictionary#default('g:vimdictionary_winminheight', 5)
+call vimdictionary#default('g:vimdictionary_persistent_server', 1)
 " }}}
 
 " Functions. {{{
