@@ -68,15 +68,19 @@ See `:tab help packages` in vim for details.
 
 # Customizing
 
-Two variables are customizable:
+Three variables are customizable:
 
-1. The height of the window with the lookup result. Put this in your vimrc:
+1. The height of the window with the lookup result.
 
         let g:vimdictionary_winheight = 10
 
 1. The `winminheight` for the window with the lookup result.
 
         let g:vimdictionary_winminheight = 5
+
+1. The persistence of the python3 server process if you have no vim instances running (it may speed up the initialization of your vim a little bit).
+
+        let g:vimdictionary_persistent_server = 1
 
 # Ideas for the future
 
