@@ -129,7 +129,7 @@ This section briefly defines development guidelines for vim-dicionary.
 for developers to check pending issues.
 
 TODO: add tests and then add the following guideline.
-5. If submitting a pull request then a test should be added which smartly
+4. If submitting a pull request then a test should be added which smartly
 covers the found bug/new feature. Check out the `tests/test.sh` (1) file and
 other executed files.
 A suggested structure is the following: add your test to
@@ -139,6 +139,10 @@ files at `tests/test_python_sample_code` (4). File (1) should be trigger the
 newly added file (2). This latter file should invoke vim which in turn sources
 file (3). File (3) may then read (4) as a first part of its assertion
 structure and then execute the remaining of the instructions/assertions.
+
+Trivia: the idea for this project came from
+https://vi.stackexchange.com/questions/14502/dictionary-as-in-wikitionary-plugin-indication/
+.
 
 ===============================================================================
 6. Changelog ~
