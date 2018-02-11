@@ -44,34 +44,39 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
             self.tcpreqhan_logger.debug(
                 "Socket received: '{0}'.".format(repr(data)))
             try:
-                decoded = json.loads(data)
+                decoded = map(lambda x: (int(x[0]), x[1]),
+                              map(json.loads, data.splitlines()))
             except ValueError:
                 self.tcpreqhan_logger.debug(
                     "Json decoding error: 'ValueError'.")
                 break
-            code, content = decoded
-            self.tcpreqhan_logger.debug(
-                "Correctly decoded json. Code: '{0}'. Content: '{1}'.".format(
-                    code, content))
 
-            # Send a response if the sequence number is positive.
-            # Negative numbers are used for "eval" responses.
-            if content == '!close':
+            for code, content in decoded:
                 self.tcpreqhan_logger.debug(
-                    "Terminating ThreadedTCPRequestHandler.")
-                self.server.shutdown()
-                self.server.server_close()
-                return 1
-            elif content == '!is_alive':
-                self.tcpreqhan_logger.debug("Send '!is_alive' signal.")
-                self.request.sendall('TRUE'.encode('utf-8'))
-            elif decoded[0] >= 0:
-                response = self.dictionary.lookup(decoded[1])
-                encoded = json.dumps([decoded[0], response])
-                # self.tcpreqhan_logger.info("Sleeping for 2 seconds.")
-                # time.sleep(2)
-                self.tcpreqhan_logger.info("Sending: '{0}'.".format(encoded))
-                self.request.sendall(encoded.encode('utf-8'))
+                    "Correctly decoded json. Code: '{0}'. Content: '{1}'.".format(
+                        code, content))
+
+                # Send a response if the sequence number is positive.
+                # Negative numbers are used for "eval" responses.
+                if content == '!close':
+                    self.tcpreqhan_logger.debug(
+                        "Terminating ThreadedTCPRequestHandler.")
+                    self.server.shutdown()
+                    self.server.server_close()
+                    return 1
+                elif content == '!is_alive':
+                    self.tcpreqhan_logger.debug("Send '!is_alive' signal.")
+                    self.request.sendall('TRUE'.encode('utf-8'))
+                elif code >= 0:
+                    response = self.dictionary.lookup(content)
+                    encoded = json.dumps([code, response])
+                    # self.tcpreqhan_logger.info("Sleeping for 2 seconds.")
+                    # time.sleep(2)
+                    try:
+                        self.request.sendall(encoded.encode('utf-8'))
+                    except BrokenPipeError as exp:
+                        print(exp)
+                    self.tcpreqhan_logger.info("Sending: '{0}'.".format(encoded))
 
 
 class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):

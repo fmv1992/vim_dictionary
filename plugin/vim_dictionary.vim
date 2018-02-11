@@ -89,8 +89,13 @@ endfunction
 
 " }}}
 function! s:VimDictDictionary(word) " {{{
-    let l:definition = vimdictionary#getdictionarydefinition(a:word)
-    call vimdictionary#populatedictionarywindow(l:definition)
+    " Old synchronous/blocking call.
+    " let l:definition = vimdictionary#getdictionarydefinition(a:word)
+    " call vimdictionary#populatedictionarywindow(l:definition)
+    call ch_sendexpr(g:vim_dictionary_channel,
+        \ a:word,
+        \ {'callback': 'vimdictionary#populatedictionarywindow',
+        \ 'timeout': 10000})
 endfunction
 
 " }}}

@@ -53,10 +53,10 @@ endfunction
 " }}}
 
 " Functions related to dictionary window. {{{
-function! vimdictionary#populatedictionarywindow(definition) " {{{
+function! vimdictionary#populatedictionarywindow(channel, msg) " {{{
     let l:curr_win_nr = win_getid(winnr())
     call s:VimDictOpenVimDictWindow()
-    silent put=a:definition
+    silent put=a:msg
     normal! gg
     " Delete to black hole register.
     normal! "_dd
@@ -85,11 +85,13 @@ endfunction
 " }}}
 " }}}
 
-" Functions related to dictionary lookup. {{{
-function! vimdictionary#getdictionarydefinition(word) " {{{
-    let l:definition = ch_evalexpr(g:vim_dictionary_channel, a:word)
-    return l:definition
-endfunction
+" Function substituted to be ran asynchronously (now
+" 'vimdictionary#populatedictionarywindow' get invoked directly).
+" " Functions related to dictionary lookup. {{{
+" function! vimdictionary#getdictionarydefinition(word) " {{{
+"     let l:definition = ch_evalexpr(g:vim_dictionary_channel, a:word)
+"     return l:definition
+" endfunction
 
 " }}}
 " }}}
