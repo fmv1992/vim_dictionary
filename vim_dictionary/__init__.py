@@ -1,8 +1,15 @@
 """Define dictionary related functions for the vim_dictionary application."""
 
+import argparse
 import logging
 import os
 import tempfile
+
+try:
+    import wiktionaryparser  # noqa
+    HAS_WIKITIONARY = True
+except ImportError:
+    HAS_WIKITIONARY = False
 
 # Important: Bottom of file import to avoid cyclic import.
 # from download_dictionary import DICTIONARY_PATH
@@ -13,6 +20,22 @@ LOGGING_FORMAT = logging.Formatter(
          '| {message:s}'),
     datefmt='%Y-%m-%d %H:%M:%S',
     style='{')
+
+
+def parse_arguments():
+    """Parse arguments."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '--dictionary',
+        help=("Set the dictionary to be used. Implemented options are: "
+              "{0}.".format(",".join(["'wikitionary' (online)",
+                                      "'webster' (offline)"]))),
+        default='wikitionary',
+        required=True)
+
+    args = parser.parse_args()
+
+    return args
 
 
 def setup_logging():
@@ -48,3 +71,15 @@ def instantiate_logger(name):
         mylogger.addHandler(myconsole)
 
     return mylogger
+
+
+def get_dictionary():
+    """Return the dictionary read from the command line arguments."""
+    from vim_dictionary.dictionaries import (WebsterDictionary,  # noqa
+                                            WikitionaryDictionary)
+    arguments = parse_arguments()
+    if arguments.dictionary == 'webster':
+        dictionary = WebsterDictionary()
+    elif arguments.dictionary == 'wikitionary':
+        dictionary = WikitionaryDictionary()
+    return dictionary

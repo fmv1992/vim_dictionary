@@ -8,7 +8,7 @@ if ! has ('channel')
 endif
 if len(s:lack_deps) != 0
     echoerr 'vim_dictionary: vim lacks the following dependencies: '
-                \ . join(s:lack_deps, ', ')
+        \ . join(s:lack_deps, ', ')
     finish
 endif
 " }}}
@@ -22,6 +22,7 @@ let g:vim_dictionary_root = expand('<sfile>:p:h:h') . '/vim_dictionary'
 " }}}
 
 " Set plugin variables. {{{
+call vimdictionary#default('g:vimdictionary_dictionary', 'wikitionary')
 call vimdictionary#default('g:vimdictionary_winheight', 10)
 call vimdictionary#default('g:vimdictionary_winminheight', 5)
 call vimdictionary#default('g:vimdictionary_persistent_server', 1)
@@ -50,7 +51,8 @@ endfunction
 function! s:VimDictStartDictionaryServer() " {{{
 
     let l:py3server_file = g:vim_dictionary_root .
-                \ '/vim_dictionary_server.py &'
+        \ '/vim_dictionary_server.py ' .
+        \ '--dictionary ' . g:vimdictionary_dictionary . ' &'
     call system("python3 " . l:py3server_file)
 
 endfunction
@@ -59,8 +61,8 @@ endfunction
 function! s:VimDictConnectToServer() " {{{
 
     let l:timer = timer_start(100,
-                \ 'vimdictionary#connecttodictionaryserver',
-                \ {'repeat': 100})
+        \ 'vimdictionary#connecttodictionaryserver',
+        \ {'repeat': 100})
 
 endfunction
 
