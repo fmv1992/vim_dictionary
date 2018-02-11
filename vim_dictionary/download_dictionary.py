@@ -3,7 +3,7 @@
 import os
 import urllib.request
 
-from __init__ import _instantiate_logger, setup_logging
+from __init__ import instantiate_logger, setup_logging
 
 DICTIONARY_PATH = os.path.abspath(os.path.join(
     os.path.dirname(os.path.dirname(
@@ -21,7 +21,7 @@ def download_dictionary():
         None.
 
     """
-    download_logger = _instantiate_logger('download_dictionary')
+    download_logger = instantiate_logger('download_dictionary')
     download_logger.debug("Opening URL '{0}'.".format(DICT_URL))
     response = urllib.request.urlopen(DICT_URL)
     download_logger.debug("Downloading '{0}'.".format(DICT_URL))
@@ -39,7 +39,7 @@ def main():
 
     """
     setup_logging()
-    main_logger = _instantiate_logger('main_logger')
+    main_logger = instantiate_logger('main_logger')
     main_logger.debug('Started logger.')
     download_dictionary()
 

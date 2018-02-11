@@ -1,24 +1,23 @@
 """Python server for the vim_dictionary application."""
 
-import time
 import json
 import os
 import socket
 import socketserver
 
-from __init__ import (get_dictionary, get_entries, lookup, setup_logging,
-                      _instantiate_logger)
+from dictionaries import WebsterDictionary
+from __init__ import setup_logging, instantiate_logger
 
 
 HOST, PORT = 'localhost', 49158
 
+
 class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
     """Server that handles dictionary requests by vim and lookups."""
 
-    tcpreqhan_logger = _instantiate_logger('tcpreqhan')
+    tcpreqhan_logger = instantiate_logger('tcpreqhan')
     tcpreqhan_logger.debug("Initializing 'ThreadedTCPRequestHandler' class.")
-    dictionary = get_dictionary()
-    entries = get_entries(dictionary)
+    dictionary = WebsterDictionary()
 
     def handle(self):
         """Receive and send data from vim."""
@@ -49,8 +48,9 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
                     "Json decoding error: 'ValueError'.")
                 break
             code, content = decoded
-            self.tcpreqhan_logger.debug("Correctly decoded json. Code: '{0}'. Content: '{1}'.".format(
-                code, content))
+            self.tcpreqhan_logger.debug(
+                "Correctly decoded json. Code: '{0}'. Content: '{1}'.".format(
+                    code, content))
             self.tcpreqhan_logger.debug("Len dictionary: {0}.".format(
                 len(self.dictionary)))
 
@@ -66,9 +66,8 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
                 self.tcpreqhan_logger.debug("Send '!is_alive' signal.")
                 self.request.sendall('TRUE'.encode('utf-8'))
             elif decoded[0] >= 0:
-                response = lookup(decoded[1].upper(),
-                                  self.entries,
-                                  self.dictionary)
+                response = self.dictionary.lookup(
+                    decoded[1].upper())
                 encoded = json.dumps([decoded[0], response])
                 # self.tcpreqhan_logger.info("Sleeping for 2 seconds.")
                 # time.sleep(2)
@@ -85,7 +84,8 @@ class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
 
 
 def check_server_is_on():
-    csio_logger = _instantiate_logger('check_server_is_on')
+    """Check if server is online."""
+    csio_logger = instantiate_logger('check_server_is_on')
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
         while True:
             try:
@@ -111,7 +111,7 @@ if __name__ == '__main__':
 
     # Start logging.
     setup_logging()
-    server_logger = _instantiate_logger(
+    server_logger = instantiate_logger(
         os.path.basename(__file__).strip('.py'))
     server_logger.debug('Is inside main.')
 
