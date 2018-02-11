@@ -19,19 +19,28 @@ source ./test_helpers_bash/test_createvimrc.sh
 # Execute tests.
 # TODO: enable those commented out tests.
 declare -a TEST_ARRAY=(
-    "./test_bash/test_lookup.sh"
-    "./test_bash/test_helpfiles.sh"
-    # "./test_bash/test_download.sh"
-    # "./test_bash/test_server.sh"
-    )
+"./test_bash/test_lookup.sh"
+"./test_bash/test_helpfiles.sh"
+# "./test_bash/test_download.sh"
+# "./test_bash/test_server.sh"
+)
+declare -a DICTIONARIES=(
+"--dictionary webster"
+"--dictionary wikitionary"
+)
 ## now loop through the above array
-set +e
-for ONE_TEST in "${TEST_ARRAY[@]}"
+# set +e
+for ONE_DICTIONARY in "${DICTIONARIES[@]}"
 do
-   echo "Starting test: $ONE_TEST" >> $VIM_OUTPUT_FILE
-   bash -x "$ONE_TEST"
-   echo -e "\n$ONE_TEST: Return code: $?" >> $VIM_OUTPUT_FILE
-   bash ./test_helpers_bash/test_prepare_between_tests.sh
+    for ONE_TEST in "${TEST_ARRAY[@]}"
+    do
+        eval "python3 ../vim_dictionary/vim_dictionary_server.py $ONE_DICTIONARY &"
+        echo "Starting test: $ONE_TEST" >> $VIM_OUTPUT_FILE
+        bash -x "$ONE_TEST"
+        echo -e "\n$ONE_TEST: Return code: $?" >> $VIM_OUTPUT_FILE
+        bash ./test_helpers_bash/test_prepare_between_tests.sh
+    done
+    bash ./test_helpers_bash/test_kill_server.sh
 done
 
 # Show errors:

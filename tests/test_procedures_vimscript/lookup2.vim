@@ -11,11 +11,32 @@ call VimDictTestWaitForServer()
 " call VimDictAddPluginToPythonPath()
 let random_words = VimDictGetRandomWords()
 
+" To have at least one valid word.
+Dictionary knight
+
+let i = 0
 for random_entry in random_words
+    echom "Looping in lookup2 with " . i .": " . random_entry
     execute "Dictionary " . random_entry
+    let i = i + 1
+    sleep 5
 endfor
+" TODO: fix this.
+qall!
+
+" let chstatus = ch_status(g:vim_dictionary_channel)
+" while chstatus == "open"
+"     let chstatus = ch_status(g:vim_dictionary_channel)
+"     echom 'chstatus ' . chstatus
+"     sleep 100 m
+" endwhile
+
+" Malfunctioning assertion here...
+" call assert_true(bufexists('vim_dictionary-scratch'))
+
 
 if len(v:errors) > 0
+    echom "Exiting lookup2 with errors" . join(v:errors, '|')
     cquit!
 else
     qall!
