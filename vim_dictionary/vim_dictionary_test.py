@@ -1,15 +1,21 @@
 """Provide functions to test this plugin."""
 
+import unittest
+
 import random
 
-from __init__ import DICT_ENTRY_REGEX, get_dictionary
+from dictionaries import WebsterDictionary
+
+
+class WebsterDictionaryTest(unittest.TestCase):
+    """Unit test for WebsterDictionary."""
+    pass
 
 
 def get_random_entries(n_sample=100):
     """Get a list of random entries."""
-    dictionary = get_dictionary()
-    all_entries = tuple(DICT_ENTRY_REGEX.findall(dictionary))
-    return random.sample(all_entries, n_sample)
+    dictionary = WebsterDictionary()
+    return random.sample(dictionary.entries, n_sample)
 
 
 def get_nth_entry(n):
@@ -17,6 +23,6 @@ def get_nth_entry(n):
     # Correct the dummy last placed entry 'ZZZ...'.
     if n < 0:
         n -= 1
-    dictionary = get_dictionary()
-    all_entries = tuple(DICT_ENTRY_REGEX.findall(dictionary))
+    dictionary = WebsterDictionary()
+    all_entries = dictionary.entries
     return all_entries[n]

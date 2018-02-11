@@ -13,7 +13,6 @@ let random_words = VimDictGetRandomWords()
 
 for random_entry in random_words
     execute "Dictionary " . random_entry
-    " echom random_entry
 endfor
 
 if len(v:errors) > 0
