@@ -29,4 +29,4 @@ backup:
 	cp -rf ./download/ /tmp
 
 test: download
-	bash ./tests/test.sh
+	bash -x ./tests/test.sh

@@ -41,13 +41,14 @@ do
         bash ./test_helpers_bash/test_prepare_between_tests.sh
     done
     bash ./test_helpers_bash/test_kill_server.sh
-    sleep 10s
+    sleep 3s
 done
-set -e
 
 # Show errors:
+set +e
 E1=$(grep -E "^E[0-9]+:" $VIM_OUTPUT_FILE)
 E2=$(grep -E "^Error" $VIM_OUTPUT_FILE)
+set -e
 E3="$E1\n$E2"
 if [ "$E3" = "\n" ]
 then
@@ -58,7 +59,9 @@ else
 fi
 
 # Show return codes.
+set +e
 RETURN_CODES=$(cat $VIM_OUTPUT_FILE | grep -i "Return code")
+set -e
 echo -e "${RETURN_CODES}"
 
 # Exit the script with error if there are any return codes different from 0.
