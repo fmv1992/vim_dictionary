@@ -32,9 +32,9 @@ declare -a DICTIONARIES=(
 # set +e
 for ONE_DICTIONARY in "${DICTIONARIES[@]}"
 do
+    eval "python3 ../vim_dictionary/vim_dictionary_server.py $ONE_DICTIONARY &"
     for ONE_TEST in "${TEST_ARRAY[@]}"
     do
-        eval "python3 ../vim_dictionary/vim_dictionary_server.py $ONE_DICTIONARY &"
         echo "Starting test: $ONE_TEST" >> $VIM_OUTPUT_FILE
         bash -x "$ONE_TEST"
         echo -e "\n$ONE_TEST: Return code: $?" >> $VIM_OUTPUT_FILE
