@@ -1,6 +1,6 @@
 " Define new highlighting group similar. {{{
 highlight! vimdictionaryBoldType term=underline ctermfg=67 guifg=#5f87af
-            \ cterm=bold
+    \ cterm=bold
 " }}}
 
 " Define syntaxes highilighting. {{{

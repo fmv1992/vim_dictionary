@@ -29,7 +29,6 @@ declare -a DICTIONARIES=(
 "--dictionary wikitionary"
 )
 ## now loop through the above array
-# set +e
 for ONE_DICTIONARY in "${DICTIONARIES[@]}"
 do
     eval "python3 ../vim_dictionary/vim_dictionary_server.py $ONE_DICTIONARY &"
