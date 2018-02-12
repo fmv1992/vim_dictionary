@@ -1,4 +1,4 @@
-*vim_dictionary* For Vim Version 8.0    Last change: 2018 January 07
+*vim_dictionary* For Vim Version 8.0    Last change: 2018 February 12
 
     _   __(_)___ ___        ____/ (_)____/ /_(_)___  ____  ____ ________  __
    | | / / / __ '__ \______/ __  / / ___/ __/ / __ \/ __ \/ __ `/ ___/ / / /
@@ -6,7 +6,7 @@
    |___/_/_/ /_/ /_/      \__,_/_/\___/\__/_/\____/_/ /_/\__,_/_/   \__, /
                                                                    /____/
 
-                          Version: 0.0.2
+                          Version: 0.0.3
 
 ===============================================================================
 CONTENTS                                                *vim_dictionary-contents*
@@ -56,6 +56,20 @@ of the dictionary window.
 2. Variables ~
                                                        *vim_dictionary-variables*
 
+                                                   *'g:vimdictionary_dictionary'*
+Set the dictionary to be used. Can be either 'wikitionary' (online) or
+'webster' (offline).
+>
+    let g:vimdictionary_dictionary = 'wikitionary'
+<
+
+                                            *'g:vimdictionary_persistent_server'*
+This option disables the termination of the process when the last instance of
+vim is closed. It may save some time during vim non-first vim's initialization.
+>
+    let g:vimdictionary_persistent_server = 1
+<
+
                                                     *'g:vimdictionary_winheight'*
 Set height of the dictionary window.
 >
@@ -68,12 +82,6 @@ This is different than vim's |winheight|. This values is actually called with
 This is equivalent to setting |winminheight| in the opened window.
 >
     let g:vimdictionary_winminheight = 5
-<
-                                            *'g:vimdictionary_persistent_server'*
-This option disables the termination of the process when the last instance of
-vim is closed. It may save some time during vim non-first vim's initialization.
->
-    let g:vimdictionary_persistent_server = 1
 <
 
 ===============================================================================
@@ -99,22 +107,30 @@ server so that closing vim also closes the server.
 
 Vim-dictionary downloads a free dictionary Project Gutenberg at
 <http://www.gutenberg.org/ebooks/29765>. This enables the plugin to be used
-even in offline mode.
+even in offline mode. P. Gutenberg's dictionary is not the one with the highest
+quality. However due to time constraints and to the intention of making it
+useful even when offline I have opted for this design. See
+|vim_dictionary-next-steps| for suggested improvements.
 
-P. Gutenberg's dictionary is not the one with the highest quality. However due
-to time constraints and to the intention of making it useful even when offline
-I have opted for this design. See |vim_dictionary-next-steps| for suggested
-improvements.
+Vim-dictionary has also an online mode which uses the wikitionary.
 
 ===============================================================================
 4. Next steps ~
                                                       *vim_dictionary-next-steps*
 
+1. Add support for multiple languages using the wikitionary.
+1. Serialize seaches/enable cache.
+1. Add support for Windows OS.
+1. Expand possible dictionaries.
+    * Greatly expanded with the wikitionary in version 0.0.3.
 1. Add support for different dictionaries (maybe even online ones).
+    * Added in version 0.0.3 (wikitionary)
 1. Create an API for easy plugging of different languages dictionaries.
+    * Added in version 0.0.3, see the `VimDictionary` class.
 1. Make the dictionaries entries "jumpable" (e.g.: CTRL-] would call dictionary
 on that word).
 1. Add a test suite for the plugin.
+    * Improved in version 0.0.3.
 
 ===============================================================================
 5. Development ~
@@ -148,6 +164,8 @@ https://vi.stackexchange.com/questions/14502/dictionary-as-in-wikitionary-plugin
 6. Changelog ~
                                                        *vim_dictionary_changelog*
 
+* Version 0.0.3
+    * Added support for online mode with 'wikitionary'.
 * Version 0.0.2
     * Added option to leave the python server alive even without vim instances
     using the |g:vimdictionary_persistent_server| variable.

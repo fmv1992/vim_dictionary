@@ -70,43 +70,12 @@ See `:tab help packages` in vim for details.
 
 # Customizing
 
-Three variables are customizable:
-
-1. The height of the window with the lookup result.
-
-        let g:vimdictionary_winheight = 10
-
-1. The `winminheight` for the window with the lookup result.
-
-        let g:vimdictionary_winminheight = 5
-
-1. The persistence of the python3 server process if you have no vim instances running (it may speed up the initialization of your vim a little bit).
-
-        let g:vimdictionary_persistent_server = 1
+After installing you can check out the available customizations with: `:help vim_dictionary-variables`.
 
 # Ideas for the future
 
-1. Add windows support (make paths platform independent basically).
-1. Expand possible dictionaries.
-1. Support "pluggable" dictionaries (create a known python API for it).
-1. Support bilingual dictionaries/thesaurus.
+After installing see the `:help vim_dictionary-next-steps`.
 
 # License
 
 [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html).
-
-<!---
-# Advanced
-
-## Testing
-
-1. [✓] Stress test.
-1. [✓] First word.
-1. [✓] Last word.
-1. [✓] Random words.
-
---->
-## TODO
-
-* If vim is called via root other it creates the dictionary file '/tmp/vim_dictionary.log' which cannot be overwritten.
-* Add the option to let the python3 server idle even without vim instances.
