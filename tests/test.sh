@@ -29,6 +29,7 @@ declare -a DICTIONARIES=(
 "--dictionary wikitionary"
 )
 ## now loop through the above array
+set +e
 for ONE_DICTIONARY in "${DICTIONARIES[@]}"
 do
     eval "python3 ../vim_dictionary/vim_dictionary_server.py $ONE_DICTIONARY &"
@@ -42,6 +43,7 @@ do
     bash ./test_helpers_bash/test_kill_server.sh
     sleep 10s
 done
+set -e
 
 # Show errors:
 E1=$(grep -E "^E[0-9]+:" $VIM_OUTPUT_FILE)
