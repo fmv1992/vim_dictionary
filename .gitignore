@@ -12,3 +12,7 @@
 
 # ...even if they are in subdirectories
 !*/
+
+# Ignore packaging folders.
+build/
+dist/

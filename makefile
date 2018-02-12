@@ -1,5 +1,7 @@
 install: download generate_help
-	:
+	# sudo pip3 install wikitionaryparser
+	# pip3 install vim-dictionary[all]
+	sudo pip3 install -e ".[all]"
 
 download: download/websters_unabridged_dictionary_by_various.txt.utf-8
 	:

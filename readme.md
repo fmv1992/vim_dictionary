@@ -2,6 +2,8 @@
 
 # Vim_dictionary
 
+Enable dictionary capabilities within vim.
+
 ## Screencast
 
 See it in action:
