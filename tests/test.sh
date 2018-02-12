@@ -41,6 +41,7 @@ do
         bash ./test_helpers_bash/test_prepare_between_tests.sh
     done
     bash ./test_helpers_bash/test_kill_server.sh
+    sleep 10s
 done
 
 # Show errors:

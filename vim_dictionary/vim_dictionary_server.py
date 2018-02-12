@@ -131,3 +131,4 @@ if __name__ == '__main__':
 
     # Finish server gracefully.
     server_logger.debug("Finished '{0}'.".format(__file__))
+    server.shutdown()

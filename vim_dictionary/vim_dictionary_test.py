@@ -12,7 +12,7 @@ class WebsterDictionaryTest(unittest.TestCase):
     pass
 
 
-def get_random_entries(n_sample=100):
+def get_random_entries(n_sample=10):
     """Get a list of random entries."""
     dictionary = WebsterDictionary()
     return random.sample(dictionary.entries, n_sample)

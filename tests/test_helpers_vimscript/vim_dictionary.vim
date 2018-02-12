@@ -22,7 +22,8 @@ logging.disable(sys.maxsize)
 import vim
 from vim_dictionary_test import get_random_entries
 
-N = 20
+# N will be doubled because mixed_entries = random_entries + garbage_entries.
+N = 10
 random_entries = [x.lower() for x in get_random_entries(N)]
 
 MAX_LETTERS = len(string.ascii_letters)
