@@ -75,8 +75,7 @@ def instantiate_logger(name):
 
 def get_dictionary():
     """Return the dictionary read from the command line arguments."""
-    from vim_dictionary.dictionaries import (WebsterDictionary,  # noqa
-                                            WikitionaryDictionary)
+    from dictionaries import WebsterDictionary,  WikitionaryDictionary
     arguments = parse_arguments()
     if arguments.dictionary == 'webster':
         dictionary = WebsterDictionary()

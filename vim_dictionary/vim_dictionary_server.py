@@ -6,7 +6,7 @@ import os
 import socket
 import socketserver
 
-import vim_dictionary
+import __init__ as vim_dictionary
 
 
 HOST, PORT = 'localhost', 49158

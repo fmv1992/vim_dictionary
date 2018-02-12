@@ -11,7 +11,8 @@ import re
 from wiktionaryparser import WiktionaryParser
 
 from download_dictionary import DICTIONARY_PATH
-import vim_dictionary
+
+import __init__ as vim_dictionary
 
 
 # pylama: ignore=D101,D102
