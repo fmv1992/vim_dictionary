@@ -15,7 +15,7 @@ from download_dictionary import DICTIONARY_PATH
 import __init__ as vim_dictionary
 
 
-# pylama: ignore=D101,D102
+# pylama: ignore=D101,D102,D107
 
 
 class VimDictionary(object):
@@ -24,7 +24,6 @@ class VimDictionary(object):
         lookup_logger = vim_dictionary.instantiate_logger('Lookup')
         lookup_logger.debug("Looking up: '{0}'".format(entry))
         return self._lookup(entry)
-
 
 
 class WebsterDictionary(VimDictionary):
@@ -65,8 +64,6 @@ class WebsterDictionary(VimDictionary):
         dictionary = _add_last_dummy_entry(dictionary)
         return dictionary
 
-    _RAW_DICTIONARY = _get_dictionary.__func__()
-
     def _get_entries(self):
         """Get all entries in the dictionary.
 
@@ -80,6 +77,8 @@ class WebsterDictionary(VimDictionary):
         """
         getentries_logger = vim_dictionary.instantiate_logger('get_entries')
         getentries_logger.debug("Was called.")
+        self._RAW_DICTIONARY = self._get_dictionary()
+        getentries_logger.debug("Set '_RAW_DICTIONARY' attribute.")
         return tuple(self.DICT_ENTRY_REGEX.findall(
             self._RAW_DICTIONARY))
 
@@ -107,8 +106,6 @@ class WebsterDictionary(VimDictionary):
                 PATTERN,
                 self._RAW_DICTIONARY,
                 flags=(re.MULTILINE | re.DOTALL))
-            log_result = repr(full_entry.group())
-            TRUNCATE_CHARS = 100
             # lookup_logger.debug("Truncated entry ({0} chars): '{1}'".format(
             #     TRUNCATE_CHARS,
             #     log_result[:min((TRUNCATE_CHARS, len(log_result)))]))
@@ -127,7 +124,7 @@ class WebsterDictionary(VimDictionary):
         diffentry_logger.debug("Got '{0}'.".format(entry))
         try:
             first_occurrence = self.entries.index(entry)
-        except ValueError as error:
+        except ValueError:
             diffentry_logger.debug(
                 "'{0}' is not in the dictionary.".format(entry))
             return ''
@@ -162,9 +159,3 @@ if vim_dictionary.HAS_WIKITIONARY:
                 for i2, definition in enumerate(entry['definitions'], start=1):
                     lines.append('{0}. {1}'.format(i2, definition['text']))
             return '\n'.join(lines)
-
-if __name__ == '__main__':
-    # TODO: remove these lines.
-    xx = WikitionaryDictionary()
-    r1 = xx.lookup('test')
-    import ipdb; ipdb.set_trace()  # XXX BREAKPOINT

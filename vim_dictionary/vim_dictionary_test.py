@@ -9,6 +9,7 @@ from dictionaries import WebsterDictionary
 
 class WebsterDictionaryTest(unittest.TestCase):
     """Unit test for WebsterDictionary."""
+
     pass
 
 
