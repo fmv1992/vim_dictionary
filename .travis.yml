@@ -18,6 +18,6 @@ before_install:
     - cd $ORIGINAL_FOLDER
     - tree .
 install: make install
-script: vim --version && make test && tree .
+script: vim --version && make download && make test && tree .
 
 # vim: set fileformat=unix filetype=yaml nowrap :
