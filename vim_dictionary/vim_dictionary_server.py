@@ -20,7 +20,6 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
 
     def handle(self):
         """Receive and send data from vim."""
-
         self.dictionary = vim_dictionary.get_dictionary()
 
         self.tcpreqhan_logger.debug("Started log in 'handle'.")
@@ -53,7 +52,8 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
 
             for code, content in decoded:
                 self.tcpreqhan_logger.debug(
-                    "Correctly decoded json. Code: '{0}'. Content: '{1}'.".format(
+                    "Correctly decoded json. "
+                    "Code: '{0}'. Content: '{1}'.".format(
                         code, content))
 
                 # Send a response if the sequence number is positive.
@@ -76,7 +76,8 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
                         self.request.sendall(encoded.encode('utf-8'))
                     except BrokenPipeError as exp:
                         print(exp)
-                    self.tcpreqhan_logger.info("Sending: '{0}'.".format(encoded))
+                    self.tcpreqhan_logger.info(
+                        "Sending: '{0}'.".format(encoded))
 
 
 class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
