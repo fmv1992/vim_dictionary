@@ -118,7 +118,10 @@ Vim-dictionary has also an online mode which uses the wikitionary.
 4. Next steps ~
                                                       *vim_dictionary-next-steps*
 
-1. Add support for multiple languages using the wikitionary.
+1. Add support for multiple languages using the wikitionary: eg: adding a way
+to register a `DictionaryEn` and a `DictionaryPt` commands.
+1. Use 'textwidht' to wrap the dictionary entries.
+1. Improve formatting when getting text from wikitionary.
 1. Serialize seaches/enable cache.
 1. Add support for Windows OS.
 1. Expand possible dictionaries.
