@@ -1,9 +1,10 @@
+# install: generate_help
 install: download generate_help
-	# sudo pip3 install wikitionaryparser
 	cd /tmp/ && \
-		git clone --depth 1 https://github.com/Suyash458/WiktionaryParser && \
+		git clone https://github.com/Suyash458/WiktionaryParser && \
 		cd WiktionaryParser && \
-		sudo pip install -r "requirements.txt"
+		git checkout 72e5f74 && \
+		sudo python3 ./setup.py install
 	sudo pip3 install -e ".[all]"
 
 download: download/websters_unabridged_dictionary_by_various.txt.utf-8
@@ -22,6 +23,7 @@ doc/tags:
 clean: backup
 	find . -iname "__pycache__" -print0 | xargs -0 rm -rf
 	find . -iname "*.pyc" -print0 | xargs -0 rm -rf
+	rm -rf /tmp/WiktionaryParser || true
 	rm -rf ./vim_dictionary.egg-info ./doc/tags ./download/* ./dist ./build || true
 
 backup:

@@ -27,6 +27,13 @@ class VimDictionary(object):
         return '\n\n'.join(map(fill_function, list_of_paragraphs))
 
     def lookup(self, entry, textwidth):
+        try:
+            assert isinstance(entry, str)
+            assert isinstance(textwidth, int)
+        except AssertionError as ae:
+            print(entry)
+            print(textwidth)
+            raise ae
         """Lookup words according to private method '_lookup'."""
         lookup_logger = vim_dictionary.instantiate_logger('Lookup')
         lookup_logger.debug("Looking up: '{0}'".format(entry))
@@ -165,10 +172,19 @@ if vim_dictionary.HAS_WIKITIONARY:
             for i1, entry in enumerate(wikiresult, start=1):
                 lines.append(word.upper() + '\n')
                 for i2, definition in enumerate(entry['definitions'], start=1):
+                    text = definition['text']
                     # ??? Apply format improvements based on regex such as
                     # capitalization and adding spaces after a '.'.
-                    one_line = '{entry_number}. {content}'.format(
-                        entry_number=i2,
-                        content=definition['text'].capitalize())
-                    lines.append(one_line)
+                    try:
+                        one_line = '{entry_number}. {content}'.format(
+                            entry_number=i2,
+                            content=text.capitalize())
+                        lines.append(one_line)
+                    except AttributeError as ae:
+                        print(text)
+                        print(i1)
+                        print(i2)
+                        print(entry)
+                        print(definition)
+                        raise ae
             return lines

@@ -60,17 +60,17 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
 
                 # Send a response if the sequence number is positive.
                 # Negative numbers are used for "eval" responses.
-                if content == '!CLOSE':
+                parsed_content = self._parse_message_content(content)
+                if parsed_content.lookup_word.startswith('!CLOSE'):
                     self.tcpreqhan_logger.debug(
                         "Terminating ThreadedTCPRequestHandler.")
                     self.server.shutdown()
                     self.server.server_close()
                     return 1
-                elif content == '!IS_ALIVE':
+                elif parsed_content.lookup_word.startswith('!IS_ALIVE'):
                     self.tcpreqhan_logger.debug("Send '!IS_ALIVE' signal.")
                     self.request.sendall('TRUE'.encode('utf-8'))
                 elif code >= 0:
-                    parsed_content = self._parse_message_content(content)
                     response = self.dictionary.lookup(
                         parsed_content.lookup_word,
                         parsed_content.textwidth)
@@ -86,7 +86,12 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
 
     def _parse_message_content(self, msg):
         """Parse json message."""
-        word, textwidth = (msg.split(vim_dictionary.MESSAGE_CONTENT_SEPARATOR))
+        # If it is a system message.
+        if msg.startswith('!'):
+            word , textwidth = (msg, 0)
+        else:
+            word, textwidth = msg.split(
+                vim_dictionary.MESSAGE_CONTENT_SEPARATOR)
         return vim_dictionary.MessageContent(word, int(textwidth))
 
 
