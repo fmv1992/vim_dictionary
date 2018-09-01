@@ -60,14 +60,14 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
 
                 # Send a response if the sequence number is positive.
                 # Negative numbers are used for "eval" responses.
-                if content == '!close':
+                if content == '!CLOSE':
                     self.tcpreqhan_logger.debug(
                         "Terminating ThreadedTCPRequestHandler.")
                     self.server.shutdown()
                     self.server.server_close()
                     return 1
-                elif content == '!is_alive':
-                    self.tcpreqhan_logger.debug("Send '!is_alive' signal.")
+                elif content == '!IS_ALIVE':
+                    self.tcpreqhan_logger.debug("Send '!IS_ALIVE' signal.")
                     self.request.sendall('TRUE'.encode('utf-8'))
                 elif code >= 0:
                     parsed_content = self._parse_message_content(content)
@@ -111,7 +111,7 @@ def check_server_is_on():
                 csio_logger.debug('Got a ConnectionRefusedError exception.')
                 return False
         csio_logger.debug('Connected.')
-        message = json.dumps(['-1', '!is_alive'])
+        message = json.dumps(['-1', '!IS_ALIVE'])
         sock.sendall(bytes(message, 'utf8'))
         response = str(sock.recv(1024), 'ascii')
         if response == 'TRUE':

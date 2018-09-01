@@ -4,7 +4,7 @@ function! vimdictionary#vimdictionaryclose() " {{{
         let l:vim_pids = s:VimDictGetVimPIDS()
         if len(l:vim_pids) == 1
             " Terminate running python server.
-            call ch_evalexpr(g:vim_dictionary_channel, '!close')
+            call ch_evalexpr(g:vim_dictionary_channel, '!CLOSE')
         endif
     else
         " Let the python process in the background.

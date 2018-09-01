@@ -21,7 +21,7 @@ MessageContent = namedtuple('message_content', ['lookup_word', 'textwidth'])
 
 
 LOGGING_FORMAT = logging.Formatter(
-    fmt=('|Thread: %{threadName:s}|{levelname:8s}|{asctime:s}|{name:8s}'
+    fmt=('|Thread: %{threadName:18s}|{levelname:8s}|{asctime:s}|{name:12s}'
          '| {message:s}'),
     datefmt='%Y-%m-%d %H:%M:%S',
     style='{')

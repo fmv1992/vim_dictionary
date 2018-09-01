@@ -5,7 +5,7 @@ source ./test_helpers_vimscript/vim_dictionary.vim
 
 call VimDictTestWaitForServer()
 
-Dictionary !close
+Dictionary !CLOSE
 
 let chstatus = ch_status(g:vim_dictionary_channel)
 while chstatus == "open"
