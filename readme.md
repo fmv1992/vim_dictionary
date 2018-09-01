@@ -46,11 +46,13 @@ You can check for details [here](https://github.com/fmv1992/vim_dictionary/blob/
 
 ## Requirements
 
-* Vim >= 8.0
-    * `+channel` support
-    * `+python3` support
+*   Vim >= 8.0
+    *   `+channel` support.
+    *   `+python3` support.
 
-* `python3` itself.
+*   `python3` itself.
+
+*   `wiktionaryparser` for optional online and multi-lingual support.
 
 ## Installing
 
@@ -111,3 +113,5 @@ After installing see the `:help vim_dictionary-next-steps`.
 ## License
 
 [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html).
+
+[comment]: # ( vim: set filetype=markdown fileformat=unix wrap spell spelllang=en_us: )

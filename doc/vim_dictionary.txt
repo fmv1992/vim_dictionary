@@ -49,8 +49,9 @@ Yields:
 
     [...]
 
-All of this plugin's customization are two variables related to the window size
-of the dictionary window.
+As of version 0.0.4 support for multilingual dictionaries are enabled (needs
+to be online, depends on the wiktionaryparser
+<https://github.com/Suyash458/WiktionaryParser>) project).
 
 ===============================================================================
 2. Variables ~

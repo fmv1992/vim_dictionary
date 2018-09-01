@@ -1,10 +1,11 @@
 """Python server for the vim_dictionary application."""
 
-import sys
 import json
 import os
 import socket
 import socketserver
+import sys
+import textwrap
 
 import __init__ as vim_dictionary
 
@@ -26,9 +27,9 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         while True:
             # Data receiving part.
             try:
-                data = self.request.recv(4096).decode('utf-8')
+                msg = self.request.recv(4096).decode('utf-8')
                 self.tcpreqhan_logger.debug(
-                    "Got data: '{0}'.".format(repr(data)))
+                    "Got message: '{0}'.".format(repr(msg)))
             except socket.error:
                 self.tcpreqhan_logger.debug(
                     "Socket error: 'socket.error'.")
@@ -37,14 +38,15 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
                 self.tcpreqhan_logger.debug(
                     "Socket error: 'IOError'.")
                 break
-            if data == '':
+            # ???.
+            if msg == '':
                 self.tcpreqhan_logger.debug("Socket error: 'empty data'.")
                 break
             self.tcpreqhan_logger.debug(
-                "Socket received: '{0}'.".format(repr(data)))
+                "Socket received: '{0}'.".format(repr(msg)))
             try:
                 decoded = map(lambda x: (int(x[0]), x[1]),
-                              map(json.loads, data.splitlines()))
+                              map(json.loads, msg.splitlines()))
             except ValueError:
                 self.tcpreqhan_logger.debug(
                     "Json decoding error: 'ValueError'.")
@@ -68,7 +70,10 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
                     self.tcpreqhan_logger.debug("Send '!is_alive' signal.")
                     self.request.sendall('TRUE'.encode('utf-8'))
                 elif code >= 0:
-                    response = self.dictionary.lookup(content)
+                    parsed_content = self._parse_message_content(content)
+                    response = self.dictionary.lookup(
+                        parsed_content.lookup_word,
+                        parsed_content.textwidth)
                     encoded = json.dumps([code, response])
                     # self.tcpreqhan_logger.info("Sleeping for 2 seconds.")
                     # time.sleep(2)
@@ -78,6 +83,11 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
                         print(exp)
                     self.tcpreqhan_logger.info(
                         "Sending: '{0}'.".format(encoded))
+
+    def _parse_message_content(self, msg):
+        """Parse json message."""
+        word, textwidth = (msg.split(vim_dictionary.MESSAGE_CONTENT_SEPARATOR))
+        return vim_dictionary.MessageContent(word, int(textwidth))
 
 
 class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):

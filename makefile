@@ -22,8 +22,7 @@ doc/tags:
 clean: backup
 	find . -iname "__pycache__" -print0 | xargs -0 rm -rf
 	find . -iname "*.pyc" -print0 | xargs -0 rm -rf
-	rm ./download/*
-	rm ./doc/tags
+	rm -rf ./vim_dictionary.egg-info ./doc/tags ./download/* ./dist ./build || true
 
 backup:
 	cp -rf ./download/ /tmp

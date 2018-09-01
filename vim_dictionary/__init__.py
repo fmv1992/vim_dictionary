@@ -1,5 +1,6 @@
 """Define dictionary related functions for the vim_dictionary application."""
 
+from collections import namedtuple
 import argparse
 import logging
 import os
@@ -13,6 +14,10 @@ except ImportError:
 
 # Important: Bottom of file import to avoid cyclic import.
 # from download_dictionary import DICTIONARY_PATH
+
+
+MESSAGE_CONTENT_SEPARATOR = '|'  # Counterpart to l:separator.
+MessageContent = namedtuple('message_content', ['lookup_word', 'textwidth'])
 
 
 LOGGING_FORMAT = logging.Formatter(

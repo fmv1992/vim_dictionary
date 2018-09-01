@@ -6,27 +6,36 @@ pretty looking string.
 
 """
 
+import textwrap
 import re
 
 from wiktionaryparser import WiktionaryParser
 
 from download_dictionary import DICTIONARY_PATH
-
 import __init__ as vim_dictionary
 
 
-# pylama: ignore=D101,D102,D107
-
-
 class VimDictionary(object):
+    """General dictionary interface."""
 
-    def lookup(self, entry):
+    def format_looked_up_word(self, list_of_paragraphs, textwidth):
+        """Join wrapped paragraphs by empty lines."""
+        if textwidth:
+            fill_function = lambda x: textwrap.fill(x, width=textwidth)
+        else:
+            fill_function = lambda x: x
+        return '\n\n'.join(map(fill_function, list_of_paragraphs))
+
+    def lookup(self, entry, textwidth):
+        """Lookup words according to private method '_lookup'."""
         lookup_logger = vim_dictionary.instantiate_logger('Lookup')
         lookup_logger.debug("Looking up: '{0}'".format(entry))
-        return self._lookup(entry)
+        lines_of_entry = self._lookup(entry)
+        return self.format_looked_up_word(lines_of_entry, textwidth).strip()
 
 
 class WebsterDictionary(VimDictionary):
+    """Offline dictionary from Guttenberg Project."""
 
     # Dict entries in 'websters_unabridged_dictionary_by_various.txt' are all
     # case words (some have space) in a single line.
@@ -35,6 +44,7 @@ class WebsterDictionary(VimDictionary):
     ENTRY_STRING_PATTERN = r'^{0}$.+?(?=^{1}$)'
 
     def __init__(self):
+        """Initialize instance."""
         self.entries = self._get_entries()
 
     @staticmethod
@@ -90,28 +100,24 @@ class WebsterDictionary(VimDictionary):
             dictionary (str): the full dictionary.
 
         Returns:
-            str: the full text of the entry.
+            lines (list): list of strings where each string is a paragraph.
 
         """
         entry = entry.upper()
         # TODO: improve matching: see 'X RAYS; X-RAYS' for example.
         next_different_entry = self._get_next_different_entry(entry)
-        # lookup_logger.debug(
-        #     "Next different entry: '{0}'.".format(next_different_entry))
         if next_different_entry:
             PATTERN = self.ENTRY_STRING_PATTERN.format(
                 entry, next_different_entry)
-            # lookup_logger.debug("pattern: '{0}'.".format(PATTERN))
             full_entry = re.search(
                 PATTERN,
                 self._RAW_DICTIONARY,
-                flags=(re.MULTILINE | re.DOTALL))
-            # lookup_logger.debug("Truncated entry ({0} chars): '{1}'".format(
-            #     TRUNCATE_CHARS,
-            #     log_result[:min((TRUNCATE_CHARS, len(log_result)))]))
-            return full_entry.group().strip()
+                flags=(re.MULTILINE | re.DOTALL)).group().strip()
+            fe_with_line_between_title_and_body = (
+                full_entry[:len(entry)] + '\n' + full_entry[len(entry):])
+            return fe_with_line_between_title_and_body.split('\n\n')
         else:
-            return "'{0}' not in the dictionary.".format(entry)
+            return ["'{0}' not in the dictionary.".format(entry), ]
 
     def _get_next_different_entry(self, entry):
         """Get next different entry.
@@ -140,22 +146,29 @@ class WebsterDictionary(VimDictionary):
 
 if vim_dictionary.HAS_WIKITIONARY:
     class WikitionaryDictionary(VimDictionary):
+        """Online dictionary from wikitionary."""
 
         def __init__(self):
+            """Initialize instance."""
             self._parser = WiktionaryParser()
 
         def _lookup(self, entry):
             wikitionary_result = self._parser.fetch(entry)
             result = self.parse_wikitionary_entry(entry, wikitionary_result)
-            return result.strip()
+            return result
 
         @staticmethod
         def parse_wikitionary_entry(word, wikiresult):
+            """Parse wikitionary entry."""
             lines = list()
-            # lines.append(word.upper())
 
             for i1, entry in enumerate(wikiresult, start=1):
                 lines.append(word.upper() + '\n')
                 for i2, definition in enumerate(entry['definitions'], start=1):
-                    lines.append('{0}. {1}'.format(i2, definition['text']))
-            return '\n'.join(lines)
+                    # ??? Apply format improvements based on regex such as
+                    # capitalization and adding spaces after a '.'.
+                    one_line = '{entry_number}. {content}'.format(
+                        entry_number=i2,
+                        content=definition['text'].capitalize())
+                    lines.append(one_line)
+            return lines

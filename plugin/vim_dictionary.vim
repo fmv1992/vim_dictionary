@@ -29,17 +29,6 @@ call vimdictionary#default('g:vimdictionary_winminheight', 5)
 " }}}
 
 " Functions. {{{
-function! s:VimDictInit() " {{{
-
-    call s:VimDictAddPluginToPythonPath()
-    if ! s:VimDictCheckServerIsAlive()
-        call s:VimDictStartDictionaryServer()
-    endif
-    call s:VimDictConnectToServer()
-
-endfunction
-
-" }}}
 function! s:VimDictAddPluginToPythonPath() " {{{
 
     python3 import sys, vim
@@ -89,13 +78,25 @@ endfunction
 
 " }}}
 function! s:VimDictDictionary(word) " {{{
-    " Old synchronous/blocking call.
-    " let l:definition = vimdictionary#getdictionarydefinition(a:word)
-    " call vimdictionary#populatedictionarywindow(l:definition)
+    let l:separator = '|'
+    let l:buffer_textwidth = &textwidth
     call ch_sendexpr(g:vim_dictionary_channel,
-        \ a:word,
+        \ a:word . l:separator . l:buffer_textwidth,
         \ {'callback': 'vimdictionary#populatedictionarywindow',
         \ 'timeout': 10000})
+endfunction
+
+" }}}
+function! s:VimDictInit() " {{{
+
+    " Add plugin to pythonpath.
+    call s:VimDictAddPluginToPythonPath()
+    " Check that server is alive.
+    if ! s:VimDictCheckServerIsAlive()
+        call s:VimDictStartDictionaryServer()
+    endif
+    call s:VimDictConnectToServer()
+
 endfunction
 
 " }}}
