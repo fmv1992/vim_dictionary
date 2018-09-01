@@ -52,7 +52,7 @@ You can check for details [here](https://github.com/fmv1992/vim_dictionary/blob/
 
 *   `python3` itself.
 
-*   `wiktionaryparser` for optional online and multi-lingual support.
+*   Optional: `wiktionaryparser` for optional online and multi-lingual support.
 
 ## Installing
 

@@ -72,7 +72,7 @@ cb.vars['vim_dictionary_server_is_alive'] = check_server_is_on()
 
 EOF
 
-return b:vim_dictionary_server_is_alive
+    return b:vim_dictionary_server_is_alive
 
 endfunction
 

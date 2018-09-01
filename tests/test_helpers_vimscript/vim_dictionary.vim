@@ -38,15 +38,15 @@ cb = vim.current.buffer
 cb.vars['dict_random_entries'] = mixed_entries
 EOF
 
-        return b:dict_random_entries
+    return b:dict_random_entries
 
-    endfunction
+endfunction
 
-    " }}}
+" }}}
 
-    function! VimDictGetNthEntry(entry_nr) " {{{
+function! VimDictGetNthEntry(entry_nr) " {{{
 
-        let b:entry_nr = a:entry_nr
+    let b:entry_nr = a:entry_nr
 
     python3 << EOF
 import sys
