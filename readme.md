@@ -1,4 +1,6 @@
-![](https://travis-ci.org/fmv1992/vim_dictionary.svg?branch=dev)
+`master` branch : ![](https://travis-ci.org/fmv1992/vim_dictionary.svg?branch=master)
+
+`dev` branch : ![](https://travis-ci.org/fmv1992/vim_dictionary.svg?branch=dev)
 
 # Vim_dictionary
 
