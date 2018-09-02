@@ -23,6 +23,7 @@ let g:vim_dictionary_root = expand('<sfile>:p:h:h') . '/vim_dictionary'
 
 " Set plugin variables. {{{
 call vimdictionary#default('g:vimdictionary_dictionary', 'wikitionary')
+call vimdictionary#default('g:vimdictionary_dictionary_commands', {})
 call vimdictionary#default('g:vimdictionary_persistent_server', 1)
 call vimdictionary#default('g:vimdictionary_winheight', 10)
 call vimdictionary#default('g:vimdictionary_winminheight', 5)
@@ -77,11 +78,11 @@ EOF
 endfunction
 
 " }}}
-function! s:VimDictDictionary(word) " {{{
+function! s:VimDictDictionary(word, language) " {{{
     let l:separator = '|'
     let l:buffer_textwidth = &textwidth
     call ch_sendexpr(g:vim_dictionary_channel,
-        \ a:word . l:separator . l:buffer_textwidth,
+        \ a:word . l:separator . a:language . l:separator . l:buffer_textwidth,
         \ {'callback': 'vimdictionary#populatedictionarywindow',
         \ 'timeout': 10000})
 endfunction
@@ -115,5 +116,9 @@ call s:VimDictInit()
 " }}}
 
 " Define commands. {{{
-command! -nargs=1 Dictionary :call s:VimDictDictionary(<f-args>)
+command! -nargs=1 Dictionary :call s:VimDictDictionary(<f-args>, 'english')
+for [key, value] in items(g:vimdictionary_dictionary_commands)
+    let s:command_definition_string = 'command! -nargs=1 ' . value . ' :call s:VimDictDictionary(<f-args>, "' . key . '")'
+    execute '' . s:command_definition_string
+endfor
 " }}}

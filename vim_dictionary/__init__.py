@@ -17,7 +17,11 @@ except ImportError:
 
 
 MESSAGE_CONTENT_SEPARATOR = '|'  # Counterpart to l:separator.
-MessageContent = namedtuple('message_content', ['lookup_word', 'textwidth'])
+MessageContent = namedtuple(
+    'message_content',
+    ['lookup_word',
+     'language',
+     'textwidth'])
 
 
 LOGGING_FORMAT = logging.Formatter(

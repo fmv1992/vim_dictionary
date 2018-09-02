@@ -64,6 +64,15 @@ Set the dictionary to be used. Can be either 'wikitionary' (online) or
     let g:vimdictionary_dictionary = 'wikitionary'
 <
 
+                                          *'g:vimdictionary_dictionary_commands'*
+Set dictionaries for different languages and also create commands. The
+translations are different_language to English only (see:
+<https://github.com/Suyash458/WiktionaryParser/issues/40>). The dictionary
+entry structure is: "language" -> assigned command.
+>
+    let g:vimdictionary_dictionary_commands = {'portuguese': 'DictPt'}
+<
+
                                             *'g:vimdictionary_persistent_server'*
 This option disables the termination of the process when the last instance of
 vim is closed. It may save some time during vim non-first vim's initialization.

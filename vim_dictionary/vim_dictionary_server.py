@@ -73,6 +73,7 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
                 elif code >= 0:
                     response = self.dictionary.lookup(
                         parsed_content.lookup_word,
+                        parsed_content.language,
                         parsed_content.textwidth)
                     encoded = json.dumps([code, response])
                     # self.tcpreqhan_logger.info("Sleeping for 2 seconds.")
@@ -88,11 +89,11 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         """Parse json message."""
         # If it is a system message.
         if msg.startswith('!'):
-            word , textwidth = (msg, 0)
+            word, language, textwidth = (msg, '', 0)
         else:
-            word, textwidth = msg.split(
+            word, language, textwidth = msg.split(
                 vim_dictionary.MESSAGE_CONTENT_SEPARATOR)
-        return vim_dictionary.MessageContent(word, int(textwidth))
+        return vim_dictionary.MessageContent(word, language, int(textwidth))
 
 
 class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):

@@ -26,18 +26,11 @@ class VimDictionary(object):
             fill_function = lambda x: x
         return '\n\n'.join(map(fill_function, list_of_paragraphs))
 
-    def lookup(self, entry, textwidth):
-        try:
-            assert isinstance(entry, str)
-            assert isinstance(textwidth, int)
-        except AssertionError as ae:
-            print(entry)
-            print(textwidth)
-            raise ae
+    def lookup(self, entry, language, textwidth):
         """Lookup words according to private method '_lookup'."""
         lookup_logger = vim_dictionary.instantiate_logger('Lookup')
         lookup_logger.debug("Looking up: '{0}'".format(entry))
-        lines_of_entry = self._lookup(entry)
+        lines_of_entry = self._lookup(entry, language)
         return self.format_looked_up_word(lines_of_entry, textwidth).strip()
 
 
@@ -99,7 +92,7 @@ class WebsterDictionary(VimDictionary):
         return tuple(self.DICT_ENTRY_REGEX.findall(
             self._RAW_DICTIONARY))
 
-    def _lookup(self, entry):
+    def _lookup(self, entry, language):
         """Lookup an entry in the dictionary.
 
         Arguments:
@@ -110,6 +103,12 @@ class WebsterDictionary(VimDictionary):
             lines (list): list of strings where each string is a paragraph.
 
         """
+        if language != 'english':
+            raise ValueError(
+                "Looking up the word '{word}' for language '{lang}' with"
+                " English only dictionary.".format(
+                    word=entry,
+                        lang=language))
         entry = entry.upper()
         # TODO: improve matching: see 'X RAYS; X-RAYS' for example.
         next_different_entry = self._get_next_different_entry(entry)
@@ -159,8 +158,9 @@ if vim_dictionary.HAS_WIKITIONARY:
             """Initialize instance."""
             self._parser = WiktionaryParser()
 
-        def _lookup(self, entry):
-            wikitionary_result = self._parser.fetch(entry)
+        def _lookup(self, entry, language):
+            """Language is ignored for this dictionary."""
+            wikitionary_result = self._parser.fetch(entry, language=language)
             result = self.parse_wikitionary_entry(entry, wikitionary_result)
             return result
 
@@ -175,16 +175,8 @@ if vim_dictionary.HAS_WIKITIONARY:
                     text = definition['text']
                     # ??? Apply format improvements based on regex such as
                     # capitalization and adding spaces after a '.'.
-                    try:
-                        one_line = '{entry_number}. {content}'.format(
-                            entry_number=i2,
-                            content=text.capitalize())
-                        lines.append(one_line)
-                    except AttributeError as ae:
-                        print(text)
-                        print(i1)
-                        print(i2)
-                        print(entry)
-                        print(definition)
-                        raise ae
+                    one_line = '{entry_number}. {content}'.format(
+                        entry_number=i2,
+                        content=text.capitalize())
+                    lines.append(one_line)
             return lines
