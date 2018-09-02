@@ -32,16 +32,20 @@ declare -a DICTIONARIES=(
 set +e
 for ONE_DICTIONARY in "${DICTIONARIES[@]}"
 do
-    eval "python3 ../vim_dictionary/vim_dictionary_server.py $ONE_DICTIONARY &"
-    for ONE_TEST in "${TEST_ARRAY[@]}"
+    for ONE_VIM_TEST_FILE in $(find ./test_procedures_vimscript -iname "*.vim")
     do
-        echo "Starting test: $ONE_TEST" >> $VIM_OUTPUT_FILE
-        bash -x "$ONE_TEST"
-        echo -e "\n$ONE_TEST: Return code: $?" >> $VIM_OUTPUT_FILE
+        # Prepare between tests.
         bash ./test_helpers_bash/test_prepare_between_tests.sh
+        echo "Starting test: $ONE_VIM_TEST_FILE" >> $VIM_OUTPUT_FILE
+        eval "python3 ../vim_dictionary/vim_dictionary_server.py $ONE_DICTIONARY &"
+        vim \
+            -i NONE \
+            -u $VIM_TEST_VIMRC \
+            -c "source ${ONE_VIM_TEST_FILE}" \
+            $VIM_DISPOSABLE_PYFILE \
+            > /dev/null 2>&1
+        echo -e "\n$ONE_VIM_TEST_FILE: Return code: $?" >> $VIM_OUTPUT_FILE
     done
-    bash ./test_helpers_bash/test_kill_server.sh
-    sleep 3s
 done
 
 # Show errors:

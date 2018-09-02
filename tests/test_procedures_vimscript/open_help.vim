@@ -10,4 +10,7 @@ try
 catch /^Vim\%((\a\+)\)\=:E149/
     cquit!
 endtry
-qall!
+
+call VimDictClose()
+
+call VimDictFinishTest()

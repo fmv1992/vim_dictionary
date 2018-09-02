@@ -1,18 +1,18 @@
-" Test lookup for first and last entries.
+" Test testwidth enforcement.
 
 " Load auxiliary code.
 source ./test_helpers_vimscript/vim_dictionary.vim
 
+" Wait for server to be up.
 call VimDictTestWaitForServer()
 
-let first_entry = VimDictGetNthEntry(0)
-let last_entry = VimDictGetNthEntry(-1)
+let entry = 'knight'
 
-execute "Dictionary " . first_entry
-execute "Dictionary " . last_entry
+set textwidth=0
+
+execute "Dictionary " . entry
 
 sleep 15000 m
-
 call assert_true(bufexists('vim_dictionary-scratch'))
 
 call VimDictClose()

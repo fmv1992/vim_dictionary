@@ -21,23 +21,7 @@ for random_entry in random_words
     let i = i + 1
     sleep 5
 endfor
-" TODO: fix this.
-qall!
 
-" let chstatus = ch_status(g:vim_dictionary_channel)
-" while chstatus == "open"
-"     let chstatus = ch_status(g:vim_dictionary_channel)
-"     echom 'chstatus ' . chstatus
-"     sleep 100 m
-" endwhile
+call VimDictClose()
 
-" Malfunctioning assertion here...
-" call assert_true(bufexists('vim_dictionary-scratch'))
-
-
-if len(v:errors) > 0
-    echom "Exiting lookup2 with errors" . join(v:errors, '|')
-    cquit!
-else
-    qall!
-endif
+call VimDictFinishTest()

@@ -65,3 +65,40 @@ EOF
 endfunction
 
 " }}}
+
+function! VimDictWaitForDictionaryToClose() " {{{
+
+    " Wait for dictionary to close.
+    let chstatus = ch_status(g:vim_dictionary_channel)
+    while chstatus == "open"
+        let chstatus = ch_status(g:vim_dictionary_channel)
+        echom 'chstatus ' . chstatus
+        sleep 100 m
+    endwhile
+
+endfunction
+
+" }}}
+
+function! VimDictClose() " {{{
+
+    Dictionary !CLOSE
+
+    call VimDictWaitForDictionaryToClose()
+
+endfunction
+
+" }}}
+
+function! VimDictFinishTest() " {{{
+
+    if len(v:errors) > 0
+        echom "Exiting lookup1 with errors" . join(v:errors, '|')
+        cquit!
+    else
+        qall!
+    endif
+
+endfunction
+
+" }}}
