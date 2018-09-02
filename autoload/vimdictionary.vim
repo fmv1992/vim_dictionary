@@ -67,8 +67,8 @@ endfunction
 " }}}
 function! s:VimDictOpenVimDictWindow() " {{{
     let l:dictionary_buffer_name = 'vim_dictionary-scratch'
-    if bufname(l:dictionary_buffer_name) != ''
-        execute 'bdelete ' . l:dictionary_buffer_name
+    if bufnr(l:dictionary_buffer_name) != -1
+        execute 'bdelete! ' . l:dictionary_buffer_name
     endif
     botright new
     execute ':edit ' . l:dictionary_buffer_name

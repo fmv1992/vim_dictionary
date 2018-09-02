@@ -121,7 +121,10 @@ class WebsterDictionary(VimDictionary):
                 flags=(re.MULTILINE | re.DOTALL)).group().strip()
             fe_with_line_between_title_and_body = (
                 full_entry[:len(entry)] + '\n' + full_entry[len(entry):])
-            return fe_with_line_between_title_and_body.split('\n\n')
+            remove_newlines_inside_paragraphs = map(
+                lambda x: x.replace('\n', ''),
+                fe_with_line_between_title_and_body.split('\n\n'))
+            return remove_newlines_inside_paragraphs
         else:
             return ["'{0}' not in the dictionary.".format(entry), ]
 

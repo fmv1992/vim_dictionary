@@ -102,3 +102,57 @@ function! VimDictFinishTest() " {{{
 endfunction
 
 " }}}
+
+function! VimDictGetRandomNumber(lower, upper) " {{{
+
+    python3 << EOF
+import random
+import vim
+
+cb = vim.current.buffer
+
+lower = vim.eval('a:lower')
+upper = vim.eval('a:upper')
+
+cb.vars['random_value'] = random.randint(int(lower), int(upper))
+
+EOF
+
+    return b:random_value
+
+endfunction
+
+" }}}
+
+function! VimDictGetMaxLineLenForEntry(entry) " {{{
+
+    silent! execute "bdelete! " . bufnr("vim_dictionary-scratch")
+
+    let current_buffer_number = bufnr("%")
+
+    execute "Dictionary " . a:entry
+
+    while bufnr("vim_dictionary-scratch") == -1
+        sleep 100
+        echom "waiting..."
+    endwhile
+
+    execute "buffer! " . bufnr("vim_dictionary-scratch")
+
+    call assert_true(bufnr("vim_dictionary-scratch") == bufnr('%'))
+    let line_lengths = []
+    for line_number in range(1, line('$'))
+        call add(line_lengths, strchars(getline(line_number)))
+    endfor
+    let max_line_len = max(line_lengths)
+
+    execute "buffer! " . current_buffer_number
+    call assert_true(bufnr("%") == current_buffer_number)
+
+    silent! execute "bdelete! " . bufnr("vim_dictionary-scratch")
+
+    return max_line_len
+
+endfunction
+
+" }}}
