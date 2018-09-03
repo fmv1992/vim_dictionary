@@ -1,4 +1,4 @@
-*vim_dictionary* For Vim Version 8.0    Last change: 2018 February 12
+*vim_dictionary* For Vim Version 8.0    Last change: 2018 September 02
 
     _   __(_)___ ___        ____/ (_)____/ /_(_)___  ____  ____ ________  __
    | | / / / __ '__ \______/ __  / / ___/ __/ / __ \/ __ \/ __ `/ ___/ / / /
@@ -6,7 +6,7 @@
    |___/_/_/ /_/ /_/      \__,_/_/\___/\__/_/\____/_/ /_/\__,_/_/   \__, /
                                                                    /____/
 
-                          Version: 0.0.3
+                          Version: 0.0.4
 
 ===============================================================================
 CONTENTS                                                *vim_dictionary-contents*
@@ -20,7 +20,7 @@ CONTENTS                                                *vim_dictionary-contents
 7. License ............................................. |vim_dictionary-license|
 
 ===============================================================================
-1. Intro ~
+1.   Intro ~
                                                            *vim_dictionary-intro*
 
 This plugin adds a dictionary functionality to your vim (dictionary as in
@@ -49,9 +49,12 @@ Yields:
 
     [...]
 
-As of version 0.0.4 support for multilingual dictionaries are enabled (needs
-to be online, depends on the wiktionaryparser
-<https://github.com/Suyash458/WiktionaryParser>) project).
+As of version 0.0.4 support for multilingual dictionaries are enabled (see
+|g:vimdictionary_dictionary_commands| below and
+<https://github.com/Suyash458/WiktionaryParser/issues/40>; needs to be online
+and depends on the wiktionaryparser
+<https://github.com/Suyash458/WiktionaryParser> project).
+??? Remove
 
 ===============================================================================
 2. Variables ~
@@ -109,7 +112,7 @@ the program but receive an error:
 
     OSError: [Errno 112] Address already in use
 
-This is a desired side effetct as it prevents other servers from being launched
+This is a desired side effect as it prevents other servers from being launched
 (i. e. one per instance).
 
 The last vim instance to be closed issues a termination command to the running
@@ -130,26 +133,20 @@ Vim-dictionary has also an online mode which uses the wikitionary.
 Next steps:
 
 1. Keep up to date with the latest wikitionary.
-1. Add support for multiple languages using the wikitionary: eg: adding a way
-to register a `DictionaryEn` and a `DictionaryPt` commands.
-1. Use 'textwidth' to wrap the dictionary entries.
-1. Improve formatting when getting text from wikitionary (e.g.: By using a
-serie of regexes to capitalize the first letter in a new sentence).
-1. Serialize seaches/enable cache.
-1. Add support for Windows OS.
-1. Make the dictionaries entries "jumpable" (e.g.: CTRL-] would call dictionary
-on that word).
-
-What was already done:
-
-1. Expand possible dictionaries.
-    * Greatly expanded with the wikitionary in version 0.0.3.
-1. Add support for different dictionaries (maybe even online ones).
-    * Added in version 0.0.3 (wikitionary)
-1. Create an API for easy plugging of different languages dictionaries.
-    * Added in version 0.0.3, see the `VimDictionary` class.
-1. Add a test suite for the plugin.
-    * Improved in version 0.0.3.
+2. Add support for multiple languages using the wikitionary: eg: adding a way
+   to register a `DictionaryEn` and a `DictionaryPt` commands.
+        * Partially addressed on v0.0.4.
+        * Needs to be 'given language' -> 'given language' (currently is 'given
+          language' -> English.
+3. Use 'textwidth' to wrap the dictionary entries.
+4. Improve formatting when getting text from wikitionary (e.g.: By using a
+   serie of regexes to capitalize the first letter in a new sentence).
+5. Serialize seaches/enable cache.
+6. Add support for Windows OS.
+7. Make the dictionaries entries "jumpable" (e.g.: CTRL-] would call dictionary
+   on that word).
+8. Add a python coding guideline like prospector
+   (<https://github.com/PyCQA/prospector>).
 
 ===============================================================================
 5. Development ~
@@ -172,11 +169,20 @@ Trivia: the idea for this project came from
 6. Changelog ~
                                                        *vim_dictionary_changelog*
 
+* Version 0.0.4
+    * Added text wrapping capabilities tied to |textwidht| through python's
+      textwrap library.
+    * Added arbitrary language to English translation through
+      |g:vimdictionary_dictionary_command|.
+    * Fixed erratic dependency to
+      <https://github.com/Suyash458/WiktionaryParser> by specifying a
+      specific commit.
+    * Improved tests architecture by simplifying 'test.sh'.
 * Version 0.0.3
     * Added support for online mode with 'wikitionary'.
 * Version 0.0.2
     * Added option to leave the python server alive even without vim instances
-    using the |g:vimdictionary_persistent_server| variable.
+      using the |g:vimdictionary_persistent_server| variable.
 * Version 0.0.1
     * First public version.
 
