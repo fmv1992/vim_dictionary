@@ -38,7 +38,10 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
                 self.tcpreqhan_logger.debug(
                     "Socket error: 'IOError'.")
                 break
-            # ???.
+            # The following if condition has to be present otherwise there is
+            # an uncountable flow of "Got message: ''''". That consumes a lot
+            # of computing resources. The reason behind that is now known to
+            # me.
             if msg == '':
                 self.tcpreqhan_logger.debug("Socket error: 'empty data'.")
                 break
