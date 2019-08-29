@@ -4,8 +4,8 @@ install: download generate_help
 		git clone https://github.com/Suyash458/WiktionaryParser && \
 		cd WiktionaryParser && \
 		git checkout 72e5f74 && \
-		sudo python3 ./setup.py install
-	sudo pip3 install -e ".[all]"
+		sudo -H python3 ./setup.py install
+	sudo -H pip3 install -e ".[all]"
 
 download: download/websters_unabridged_dictionary_by_various.txt.utf-8
 	:
