@@ -114,7 +114,9 @@ def check_server_is_on():
         while True:
             try:
                 csio_logger.debug('Trying to connect to socket.')
+                sock.settimeout(3)
                 sock.connect((HOST, PORT))
+                sock.settimeout(None)
                 break
             except ConnectionRefusedError:
                 csio_logger.debug('Got a ConnectionRefusedError exception.')
