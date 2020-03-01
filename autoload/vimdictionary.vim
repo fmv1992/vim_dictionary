@@ -35,14 +35,19 @@ endfunction
 function! vimdictionary#connecttodictionaryserver(timerid) " {{{
     " Connect to server but do not let vim hanging...
 
-    let g:vim_dictionary_channel = ch_open('localhost:49158')
-    " let l:i = 0
-    while ch_status(g:vim_dictionary_channel) == 'fail'
-        " echom '(' . l:i. ') fail...'
-        sleep 100 m
+    try
         let g:vim_dictionary_channel = ch_open('localhost:49158')
-        " let l:i = l:i + 1
-    endwhile
+        " let l:i = 0
+        while ch_status(g:vim_dictionary_channel) == 'fail'
+            " echom '(' . l:i. ') fail...'
+            sleep 100 m
+            let g:vim_dictionary_channel = ch_open('localhost:49158')
+            " let l:i = l:i + 1
+        endwhile
+    catch /^Vim\%((\a\+)\)\=:E12:/
+        return v:false
+    finally
+    endtry
 
     " echom 'Suceeded!'
     call timer_stop(a:timerid)

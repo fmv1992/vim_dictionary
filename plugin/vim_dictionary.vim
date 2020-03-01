@@ -52,7 +52,7 @@ function! s:VimDictConnectToServer() " {{{
 
     let l:timer = timer_start(100,
         \ 'vimdictionary#connecttodictionaryserver',
-        \ {'repeat': 100})
+        \ {'repeat': 10})
 
 endfunction
 
