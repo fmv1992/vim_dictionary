@@ -29,3 +29,6 @@ backup:
 
 test: download
 	bash -x ./tests/test.sh
+
+serve:
+	python3 ./vim_dictionary/vim_dictionary_server.py --dictionary wikitionary

@@ -5,13 +5,14 @@ import urllib.request
 
 from __init__ import instantiate_logger, setup_logging
 
-DICTIONARY_PATH = os.path.abspath(os.path.join(
-    os.path.dirname(os.path.dirname(
-        os.path.abspath(__file__))),
-    'download',
-    'websters_unabridged_dictionary_by_various.txt.utf-8'
-))
-DICT_URL = 'http://www.gutenberg.org/ebooks/29765.txt.utf-8'
+DICTIONARY_PATH = os.path.abspath(
+    os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "download",
+        "websters_unabridged_dictionary_by_various.txt.utf-8",
+    )
+)
+DICT_URL = "http://www.gutenberg.org/ebooks/29765.txt.utf-8"
 
 
 def download_dictionary():
@@ -21,12 +22,12 @@ def download_dictionary():
         None.
 
     """
-    download_logger = instantiate_logger('download_dictionary')
+    download_logger = instantiate_logger("download_dictionary")
     download_logger.debug("Opening URL '{0}'.".format(DICT_URL))
     response = urllib.request.urlopen(DICT_URL)
     download_logger.debug("Downloading '{0}'.".format(DICT_URL))
     dictionary_data = response.read()
-    with open(DICTIONARY_PATH, 'wb') as f:
+    with open(DICTIONARY_PATH, "wb") as f:
         f.write(dictionary_data)
         download_logger.debug("Saved to file '{0}'.".format(DICTIONARY_PATH))
 
@@ -39,10 +40,10 @@ def main():
 
     """
     setup_logging()
-    main_logger = instantiate_logger('main_logger')
-    main_logger.debug('Started logger.')
+    main_logger = instantiate_logger("main_logger")
+    main_logger.debug("Started logger.")
     download_dictionary()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
