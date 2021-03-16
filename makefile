@@ -8,14 +8,12 @@ install: download generate_help
 	sudo -H pip3 install -e ".[all]"
 
 download: download/websters_unabridged_dictionary_by_various.txt.utf-8
-	:
 
 download/websters_unabridged_dictionary_by_various.txt.utf-8:
 	python3 ./vim_dictionary/download_dictionary.py
 	touch download/websters_unabridged_dictionary_by_various.txt.utf-8
 
 generate_help: doc/tags
-	:
 
 doc/tags:
 	vim -i NONE -u NONE --cmd "helptags ./doc/" --cmd "q!"
