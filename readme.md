@@ -82,7 +82,7 @@ After installing you can check out the available customizations with: `:help vim
 Close all your vim instances and execute:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-python3 ./vim_dictionary/vim_dictionary_server.py
+make serve
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 See the live log. Also see the output file on `/tmp/vim_dictionary.log`.
@@ -111,6 +111,10 @@ See the live log. Also see the output file on `/tmp/vim_dictionary.log`.
 ## Ideas for the future
 
 After installing see the `:help vim_dictionary-next-steps`.
+
+## TODO
+
+*   If `vim` goes to background then one cannot open new instances of `vim` due to probably the `python` program going to the background as well.
 
 ## License
 
